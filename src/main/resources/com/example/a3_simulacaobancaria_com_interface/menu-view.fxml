@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="18" alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.a3_simulacaobancaria_com_interface.MenuController"
+      stylesheets="@style.css"
+      prefWidth="400" prefHeight="450">
+
+    <Label text="Sistema de Atendimento Bancário"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <Button text="Agendar atendimento" fx:id="btnAgendar" onAction="#onAgendar"/>
+    <Button text="Listar atendimentos pendentes" fx:id="btnListar" onAction="#onListar"/>
+    <Button text="Chamar próximo cliente" fx:id="btnChamar" onAction="#onChamar"/>
+    <Button text="Adicionar atendimento via PDF" fx:id="btnPDF" onAction="#onPDF"/>
+    <Button text="Ordenar Lista" fx:id="btnOrdenar" onAction="#onOrdenar"/>
+    <Button text="Sair" fx:id="btnSair" onAction="#onSair"/>
+
+</VBox>

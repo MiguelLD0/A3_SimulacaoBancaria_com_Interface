@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox spacing="15" alignment="CENTER"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.a3_simulacaobancaria_com_interface.AgendarAtendimentoController"
+      stylesheets="@style.css"
+      prefWidth="380" prefHeight="380">
+
+    <Label text="Agendar Atendimento"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <VBox spacing="10" alignment="CENTER_LEFT">
+
+        <Label text="Nome:" />
+        <TextField fx:id="campoNome" promptText="Digite o nome completo" />
+
+        <Label text="CPF:" />
+        <TextField fx:id="campoCPF" promptText="Ex: 111.222.333-44" />
+
+        <Label text="Possui deficiência física?" />
+
+        <HBox spacing="20">
+            <RadioButton text="Sim" fx:id="rbSim" />
+            <RadioButton text="Não" fx:id="rbNao" />
+        </HBox>
+
+    </VBox>
+
+    <Button text="Agendar Atendimento" fx:id="btnConfirmar" onAction="#onAgendar" />
+
+</VBox>
