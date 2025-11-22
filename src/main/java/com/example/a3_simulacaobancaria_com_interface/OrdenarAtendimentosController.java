@@ -27,7 +27,10 @@ public class OrdenarAtendimentosController {
     @FXML
     public void ordenarPorPrioridade() {
         List<Cliente> lista = fila.getTodosClientes();
-        OrdenarAtendimentos.quickSortPorPrioridade(lista, 0, lista.size() - 1);
+
+        // Agora o método recebe apenas a lista
+        OrdenarAtendimentos.mergeSortPorPrioridade(lista);
+
         fila.ordenarFila(lista);
         mensagem("Lista ordenada por Prioridade!");
     }

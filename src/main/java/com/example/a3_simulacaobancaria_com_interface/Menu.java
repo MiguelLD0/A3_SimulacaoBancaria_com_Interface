@@ -4,24 +4,34 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import java.util.List;
 
 public class Menu extends Application {
-//parte principal liga tudo//
+    //parte principal liga tudo/
     public static FilaAtendimento filaGlobal = new FilaAtendimento();
     private static Stage mainStage;
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        mainStage = stage; // ⬅️ AQUI salvamos o stage principal
+        mainStage = stage;
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menu-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         stage.setTitle("Atendimento Bancário");
+
+        // Carrega e define o ícone
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/images/icone.png"));
+            stage.getIcons().add(icon);
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar o ícone: " + e.getMessage());
+
+        }
+
         stage.setScene(scene);
-        stage.show();
+        stage.show(); // ⬅️ MOSTRA A JANELA APENAS UMA VEZ
     }
 
     public static void mudarTela(String fxml) {
@@ -38,7 +48,6 @@ public class Menu extends Application {
     }
 
     public static void main(String[] args) {
-
         // Carrega os clientes salvos no .dat
         List<Cliente> carregados = ArquivoClientes.carregarClientes();
         for (Cliente c : carregados) {

@@ -18,6 +18,7 @@
     <Button text="Chamar próximo cliente" fx:id="btnChamar" onAction="#onChamar"/>
     <Button text="Adicionar atendimento via PDF" fx:id="btnPDF" onAction="#onPDF"/>
     <Button text="Ordenar Lista" fx:id="btnOrdenar" onAction="#onOrdenar"/>
+    <Button text="Relatório" fx:id="btnRelatorio" onAction="#onRelatorio"/>
     <Button text="Sair" fx:id="btnSair" onAction="#onSair"/>
 
 </VBox>

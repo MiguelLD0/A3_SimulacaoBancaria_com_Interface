@@ -1,0 +1,374 @@
+/* ======== ESTILO ESPECÍFICO PARA LISTA DE ATENDIMENTOS ======== */
+
+/* Container principal */
+.lista-atendimentos-container {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    -fx-padding: 25;
+    -fx-spacing: 20;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 8);
+}
+
+/* Título da tela */
+.lista-titulo {
+    -fx-text-fill: #b00020;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.2), 6, 0, 2, 3);
+    -fx-border-color: linear-gradient(to right, transparent, #b00020, transparent);
+    -fx-border-width: 0 0 3 0;
+    -fx-padding: 0 0 15 0;
+}
+
+/* Container de pesquisa */
+.pesquisa-container {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+    -fx-padding: 20;
+    -fx-background-color: linear-gradient(to right, #f8f9fa, #e9ecef);
+    -fx-background-radius: 12;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 12;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 2, 3);
+}
+
+.pesquisa-label {
+    -fx-text-fill: #495057;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 10 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.8), 0, 0, 0, 1);
+}
+
+.pesquisa-field {
+    -fx-background-color: white;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 15;
+    -fx-font-size: 14px;
+    -fx-pref-width: 280;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 5, 0, 2, 2);
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.pesquisa-field:focused {
+    -fx-border-color: #b00020;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.25), 8, 0, 0, 3);
+}
+
+.pesquisa-field:hover {
+    -fx-border-color: #b00020;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.15), 6, 0, 0, 2);
+}
+
+/* Botão de limpar pesquisa - AGORA VERMELHO */
+.onLimparPesquisa {
+    -fx-background-color: linear-gradient(to bottom, #dc3545, #c82333);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8;
+    -fx-pref-width: 90;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.3), 6, 0, 2, 2);
+    -fx-cursor: hand;
+    -fx-border-color: #bd2130;
+    -fx-border-width: 1;
+}
+
+.btn-limpar:hover {
+    -fx-background-color: linear-gradient(to bottom, #c82333, #a71e2a);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.4), 8, 0, 3, 3);
+}
+
+.btn-limpar:pressed {
+    -fx-background-color: #a71e2a;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* ListView personalizada - MUITO MAIS BONITA */
+.lista-atendimentos {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.lista-atendimentos .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.lista-atendimentos .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.lista-atendimentos .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+/* Células da lista - DESIGN MODERNO E ELEGANTE */
+.lista-atendimentos .list-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-font-size: 0; /* Escondemos o texto padrão */
+}
+
+.lista-atendimentos .list-cell:filled {
+    -fx-background-color: transparent;
+    -fx-padding: 0 5 8 5; /* Espaço entre os cards */
+}
+
+.lista-atendimentos .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+.lista-atendimentos .list-cell:filled:hover {
+    -fx-background-color: transparent;
+}
+
+.lista-atendimentos .list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Container de botões */
+.botoes-container {
+    -fx-spacing: 25;
+    -fx-alignment: center;
+    -fx-padding: 20 0 0 0;
+}
+
+/* Botão remover */
+.btn-remover {
+    -fx-background-color: linear-gradient(to bottom, #dc3545, #c82333);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+    -fx-background-radius: 10;
+    -fx-pref-width: 180;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.4), 10, 0, 3, 4);
+    -fx-cursor: hand;
+    -fx-border-color: #bd2130;
+    -fx-border-width: 1;
+}
+
+.btn-remover:hover {
+    -fx-background-color: linear-gradient(to bottom, #c82333, #a71e2a);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.5), 12, 0, 4, 5);
+}
+
+.btn-remover:pressed {
+    -fx-background-color: #a71e2a;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.btn-remover:disabled {
+    -fx-background-color: #adb5bd;
+    -fx-text-fill: #6c757d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 1, 2);
+}
+
+/* Botão fechar */
+.btn-fechar {
+    -fx-background-color: linear-gradient(to bottom, #6c757d, #5a6268);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+    -fx-background-radius: 10;
+    -fx-pref-width: 130;
+    -fx-effect: dropshadow(gaussian, rgba(108,117,125,0.3), 8, 0, 2, 3);
+    -fx-cursor: hand;
+    -fx-border-color: #545b62;
+    -fx-border-width: 1;
+}
+
+.btn-fechar:hover {
+    -fx-background-color: linear-gradient(to bottom, #5a6268, #484e53);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(108,117,125,0.4), 10, 0, 3, 4);
+}
+
+/* ======== DESIGN PERSONALIZADO PARA OS CARDS DOS CLIENTES ======== */
+
+/* Card base para cada cliente */
+.cliente-card {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    -fx-background-radius: 12;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 2, 3);
+    -fx-cursor: hand;
+}
+
+.cliente-card:hover {
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    -fx-border-color: #b00020;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.15), 12, 0, 4, 5);
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+}
+
+.cliente-card:selected {
+    -fx-background-color: linear-gradient(to bottom, #ffe6e6, #ffcccc);
+    -fx-border-color: #b00020;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.2), 15, 0, 5, 6);
+}
+
+/* Container principal do card */
+.card-container {
+    -fx-spacing: 8;
+}
+
+/* Linha do nome - DESTAQUE */
+.nome-line {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.nome-text {
+    -fx-text-fill: #b00020;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(176,0,32,0.1), 2, 0, 1, 1);
+}
+
+/* Linha de detalhes */
+.detalhes-line {
+    -fx-spacing: 15;
+    -fx-alignment: center-left;
+}
+
+.detalhe-item {
+    -fx-spacing: 5;
+    -fx-alignment: center-left;
+}
+
+.detalhe-label {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.detalhe-value {
+    -fx-text-fill: #495057;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+}
+
+/* Badge de prioridade */
+.prioridade-badge {
+    -fx-background-color: #b00020;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 1, 1);
+}
+
+.prioridade-0 {
+    -fx-background-color: #dc3545; /* Vermelho para prioridade 0 */
+}
+
+.prioridade-1 {
+    -fx-background-color: #fd7e14; /* Laranja para prioridade 1 */
+}
+
+.prioridade-2 {
+    -fx-background-color: #ffc107; /* Amarelo para prioridade 2 */
+}
+
+.prioridade-3 {
+    -fx-background-color: #28a745; /* Verde para prioridade 3+ */
+}
+
+/* Linha de data/hora */
+.datahora-line {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.datahora-item {
+    -fx-spacing: 5;
+    -fx-alignment: center-left;
+}
+
+.datahora-label {
+    -fx-text-fill: #6c757d;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.datahora-value {
+    -fx-text-fill: #495057;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+}
+
+/* Scrollbar personalizada */
+.lista-atendimentos .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 14;
+}
+
+.lista-atendimentos .scroll-bar:vertical .track {
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: transparent;
+    -fx-background-radius: 7;
+}
+
+.lista-atendimentos .scroll-bar:vertical .thumb {
+    -fx-background-color: #b00020;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+}
+
+.lista-atendimentos .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #8c001f;
+}
+
+.lista-atendimentos .scroll-bar:vertical .increment-button,
+.lista-atendimentos .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 3;
+}
+
+.lista-atendimentos .scroll-bar:vertical .increment-arrow,
+.lista-atendimentos .scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #b00020;
+    -fx-padding: 2;
+}
+
+/* Indicador de lista vazia */
+.lista-vazia {
+    -fx-text-fill: #6c757d;
+    -fx-font-style: italic;
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+    -fx-padding: 60 20;
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 12;
+    -fx-border-width: 2;
+    -fx-border-style: dashed;
+}

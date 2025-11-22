@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="25" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.a3_simulacaobancaria_com_interface.AtendimentoClienteController"
+      prefWidth="500" prefHeight="450"
+      stylesheets="@styleAtendimentoCliente.css"
+      styleClass="atendimento-container">
+
+    <!-- Cabeçalho -->
+    <Label text="Atendimento em Andamento"
+           styleClass="atendimento-titulo"/>
+
+    <!-- Card do Cliente -->
+    <VBox styleClass="cliente-card-detalhado">
+        <Label text="Dados do Cliente" styleClass="card-titulo"/>
+
+        <GridPane styleClass="dados-grid">
+            <Label text="Nome:" styleClass="dados-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Label fx:id="lblNome" styleClass="dados-valor" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="CPF:" styleClass="dados-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Label fx:id="lblCpf" styleClass="dados-valor" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Prioridade:" styleClass="dados-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Label fx:id="lblPrioridade" styleClass="dados-valor" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Data Agendada:" styleClass="dados-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Label fx:id="lblData" styleClass="dados-valor" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Hora Agendada:" styleClass="dados-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <Label fx:id="lblHora" styleClass="dados-valor" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        </GridPane>
+    </VBox>
+
+    <!-- Timer do Atendimento -->
+    <VBox styleClass="timer-container">
+        <Label text="Tempo de Atendimento" styleClass="timer-label"/>
+        <Label fx:id="lblTempoAtendimento" text="00:00:00" styleClass="timer-display"/>
+    </VBox>
+
+    <!-- Botões -->
+    <HBox spacing="20" alignment="CENTER" styleClass="botoes-container">
+        <Button text="Finalizar Atendimento"
+                fx:id="btnFinalizar"
+                onAction="#onFinalizarAtendimento"
+                styleClass="btn-finalizar"/>
+
+        <Button text="Cancelar"
+                onAction="#onCancelar"
+                styleClass="btn-cancelar"/>
+    </HBox>
+
+</VBox>

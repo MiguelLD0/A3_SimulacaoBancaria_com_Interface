@@ -36,6 +36,9 @@ public class MenuController {
     @FXML
     private void onListar() {
         try {
+            List<Cliente> lista = Menu.filaGlobal.getTodosClientes();
+            OrdenarAtendimentos.ordenarCompleto(lista);
+            Menu.filaGlobal.ordenarFila(lista);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ListarAtendimentos.fxml"));
             Parent root = loader.load();
 
@@ -54,38 +57,96 @@ public class MenuController {
 
     @FXML
     private void onChamar() {
-        mostrarMensagem("Chamando próximo cliente...");
+        try {
+            // Verificar se há clientes na fila
+            if (Menu.filaGlobal.filaVazia()) {
+                mostrarMensagem("Não há clientes na fila de atendimento.");
+                return;
+            }
+
+            // Chamar o próximo cliente (remove da fila)
+            Cliente clienteChamado = Menu.filaGlobal.chamarProximo();
+
+            if (clienteChamado != null) {
+                // Abrir tela de atendimento
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("AtendimentoCliente.fxml"));
+                Parent root = loader.load();
+
+                AtendimentoClienteController controller = loader.getController();
+                controller.setCliente(clienteChamado);
+
+                Stage stage = new Stage();
+                stage.setTitle("Atendimento - " + clienteChamado.getNome());
+                stage.setScene(new Scene(root));
+                controller.setStage(stage);
+
+                // Impedir que fechem a janela principal enquanto atende
+                stage.setOnCloseRequest(e -> {
+                    controller.onCancelar();
+                });
+
+                stage.show();
+
+                // Atualizar a lista global se necessário
+                mostrarMensagem("Cliente " + clienteChamado.getNome() + " chamado para atendimento!");
+
+            } else {
+                mostrarMensagem("Erro ao chamar próximo cliente.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarMensagem("Erro ao chamar próximo cliente: " + e.getMessage());
+        }
     }
 
     @FXML
     private void onPDF() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecione um arquivo PDF");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Arquivos PDF", "*.pdf")
+        fileChooser.setTitle("Selecione um arquivo");
+
+        // Aceita PDF e CSV
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("PDF e CSV", "*.pdf", "*.csv"),
+                new FileChooser.ExtensionFilter("Arquivos PDF", "*.pdf"),
+                new FileChooser.ExtensionFilter("Arquivos CSV", "*.csv")
         );
 
         File arquivo = fileChooser.showOpenDialog(null);
+        if (arquivo == null) return;
 
-        if (arquivo != null) {
-            try {
-                List<Cliente> clientesPDF = LeitorPDF.lerClientesDoPDF(arquivo.getAbsolutePath());
+        try {
+            List<Cliente> clientesImportados;
 
-                for (Cliente c : clientesPDF) {
-                    Menu.filaGlobal.adicionarCliente(c);
-                }
+            // Descobre automaticamente o tipo do arquivo
+            String nomeArquivo = arquivo.getName().toLowerCase();
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Clientes importados do PDF com sucesso!");
-                alert.showAndWait();
-
-            } catch (Exception e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Erro ao processar o PDF");
-                alert.setContentText(e.getMessage());
-                alert.showAndWait();
+            if (nomeArquivo.endsWith(".pdf")) {
+                clientesImportados = LeitorPDF.lerClientesDoPDF(arquivo.getAbsolutePath());
             }
+            else if (nomeArquivo.endsWith(".csv")) {
+                // ALTERAÇÃO AQUI: Usando o metodo que detecta automaticamente o formato
+                clientesImportados = LeitorPDF.lerClientesDoCSVAuto(arquivo.getAbsolutePath());
+            }
+            else {
+                throw new IllegalArgumentException("Formato desconhecido: apenas PDF ou CSV.");
+            }
+
+            // Adiciona à fila global
+            for (Cliente c : clientesImportados) {
+                Menu.filaGlobal.adicionarCliente(c);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Clientes importados com sucesso!");
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Erro ao processar arquivo");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
@@ -93,7 +154,25 @@ public class MenuController {
     private void onOrdenar() {
         Menu.mudarTela("OrdenarAtendimentos.fxml");
     }
+    @FXML
+    private void onRelatorio() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Relatorio.fxml"));
+            Parent root = loader.load();
 
+            RelatorioController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Relatório do Sistema");
+            stage.setScene(new Scene(root));
+            controller.setStage(stage);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarMensagem("Erro ao abrir relatório: " + e.getMessage());
+        }
+    }
     @FXML
     private void onSair() {
 

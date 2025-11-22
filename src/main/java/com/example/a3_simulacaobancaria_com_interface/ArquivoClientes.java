@@ -1,6 +1,7 @@
 package com.example.a3_simulacaobancaria_com_interface;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +16,11 @@ public class ArquivoClientes {
             for (Cliente c : clientes){
                 sb.append(c.getNome()).append(";")
                         .append(c.getCpf()).append(";")
-                        .append(c.getPrioridade()).append("\n");
+                        .append(c.getPrioridade()).append(";")
+                        .append(c.getData()).append(";") // LocalDate é salvo como texto (YYYY-MM-DD)
+                        .append(c.getHora()).append("\n");
             }
+
             String textoCriptografado = CriptografiaUtil.criptografar(sb.toString());
 
             FileWriter fw = new FileWriter(ARQUIVO);
@@ -26,6 +30,7 @@ public class ArquivoClientes {
             System.out.println("Erro ao Salvar clientes: " + e.getMessage());
         }
     }
+
     public static List<Cliente> carregarClientes()
     {
         List<Cliente> clientes = new ArrayList<>();
@@ -42,15 +47,26 @@ public class ArquivoClientes {
 
             String textoDescriptografado = CriptografiaUtil.descriptografar(sb.toString());
             String[] linhas = textoDescriptografado.split("\n");
+
             for(String l : linhas){
                 if(l.trim().isEmpty()) continue;
+
                 String[] partes = l.split(";");
-                clientes.add(new Cliente(partes[0], partes[1], Integer.parseInt(partes[2])));
+
+                String nome = partes[0];
+                String cpf = partes[1];
+                int prioridade = Integer.parseInt(partes[2]);
+
+                LocalDate data = LocalDate.parse(partes[3]);
+                String hora = partes[4];
+
+                clientes.add(new Cliente(nome, cpf, prioridade, data, hora));
             }
+            OrdenarAtendimentos.ordenarCompleto(clientes);
         } catch (Exception e){
             System.out.println("Erro ao carregar clientes: " + e.getMessage());
         }
+
         return clientes;
     }
 }
-

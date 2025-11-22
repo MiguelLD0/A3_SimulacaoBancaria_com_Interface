@@ -2,19 +2,47 @@
 
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="15" alignment="CENTER"
-      xmlns="http://javafx/com/javafx/17"
-      xmlns:fx="http://javafx/com/fxml/1"
+<VBox spacing="15" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.a3_simulacaobancaria_com_interface.ListarAtendimentosController"
-      prefWidth="400" prefHeight="400">
+      stylesheets="@lista-atendimentos.css"
+      prefWidth="600" prefHeight="500"
+      style="-fx-padding: 20;">
 
     <Label text="Atendimentos Pendentes"
            style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <TextArea fx:id="txtLista"
-              editable="false"
-              prefWidth="380"
-              prefHeight="320"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="pesquisa-container">
+        <Label text="Pesquisar:" styleClass="pesquisa-label" />
+        <TextField fx:id="campoPesquisa"
+                   promptText="Digite o nome para pesquisar..."
+                   styleClass="pesquisa-field"
+                   onKeyReleased="#onPesquisar"/>
+        <Button text="Limpar"
+                onAction="#onLimparPesquisa"
+                styleClass="btn-limpar" />
+    </HBox>
+
+    <ListView fx:id="listaAtendimentos"
+              prefWidth="560"
+              prefHeight="350"
+              VBox.vgrow="ALWAYS"/>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Remover Selecionado"
+                fx:id="btnRemover"
+                onAction="#onRemoverSelecionado"
+                style="-fx-background-color: #ff4444; -fx-text-fill: white;"
+                disable="true"/>
+
+        <Button text="Fechar"
+                onAction="#onFechar"
+                style="-fx-background-color: #666666; -fx-text-fill: white;"/>
+    </HBox>
 
 </VBox>

@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.DatePicker?>
 
 <VBox spacing="15" alignment="CENTER"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.a3_simulacaobancaria_com_interface.AgendarAtendimentoController"
       stylesheets="@style.css"
-      prefWidth="380" prefHeight="380">
+      prefWidth="420" prefHeight="480">
 
     <Label text="Agendar Atendimento"
            style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
@@ -23,12 +24,19 @@
         <Label text="CPF:" />
         <TextField fx:id="campoCPF" promptText="Ex: 111.222.333-44" />
 
-        <Label text="Possui deficiência física?" />
-
+        <Label text="Possui prioridade?" />
         <HBox spacing="20">
             <RadioButton text="Sim" fx:id="rbSim" />
             <RadioButton text="Não" fx:id="rbNao" />
         </HBox>
+
+        <!-- NOVA SEÇÃO: Data do agendamento -->
+        <Label text="Data do Agendamento:" />
+        <DatePicker fx:id="campoData" />
+
+        <!-- NOVA SEÇÃO: Hora do agendamento -->
+        <Label text="Horário:" />
+        <TextField fx:id="campoHora" promptText="Ex: 14:30" />
 
     </VBox>
 

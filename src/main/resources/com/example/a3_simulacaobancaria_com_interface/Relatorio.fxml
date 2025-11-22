@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox spacing="20" alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.a3_simulacaobancaria_com_interface.RelatorioController"
+      prefWidth="800" prefHeight="600"
+      stylesheets="@StyleRelatorio.css"
+      styleClass="relatorio-container">
+
+    <Label text="Relatório do Sistema - Arquivo: relatorio.dat"
+           styleClass="relatorio-titulo" />
+
+    <HBox spacing="15" alignment="CENTER" styleClass="botoes-relatorio">
+        <Button text="Atualizar" onAction="#onAtualizar" styleClass="btn-atualizar"/>
+        <Button text="Exportar para TXT" onAction="#onExportarTXT" styleClass="btn-exportar"/>
+        <Button text="Limpar Relatório" onAction="#onLimparRelatorio" styleClass="btn-limpar-relatorio"/>
+        <Button text="Fechar" onAction="#onFechar" styleClass="btn-fechar"/>
+    </HBox>
+
+    <Label fx:id="lblInfo" text="" styleClass="info-label"/>
+
+    <TextArea fx:id="txtRelatorio"
+              editable="false"
+              prefWidth="760"
+              prefHeight="500"
+              styleClass="relatorio-text-area"/>
+
+</VBox>
