@@ -16,7 +16,6 @@
     <Label text="Atendimentos Pendentes"
            style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-
     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="pesquisa-container">
         <Label text="Pesquisar:" styleClass="pesquisa-label" />
         <TextField fx:id="campoPesquisa"
@@ -26,6 +25,19 @@
         <Button text="Limpar"
                 onAction="#onLimparPesquisa"
                 styleClass="btn-limpar" />
+    </HBox>
+
+    <!-- Nova seção para ordenação - Menu suspenso -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="ordenar-container">
+        <Label text="Ordenar por:" styleClass="ordenar-label" />
+        <MenuButton text="Selecionar" styleClass="ordenar-menu-button">
+            <items>
+                <MenuItem text="Nome" onAction="#ordenarPorNome2" />
+                <MenuItem text="CPF" onAction="#ordenarPorCPF2" />
+                <MenuItem text="Prioridade" onAction="#ordenarPorPrioridade2" />
+                <MenuItem text ="Data" onAction="#ordenardata"/>
+            </items>
+        </MenuButton>
     </HBox>
 
     <ListView fx:id="listaAtendimentos"

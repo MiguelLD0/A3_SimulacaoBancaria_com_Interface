@@ -42,7 +42,6 @@ public class OrdenarAtendimentos {
 
     // -------------------------------------------------------------------------
     // ====================== MERGE SORT POR PRIORIDADE ========================
-    // ---------- (substitui o QuickSort para manter estabilidade) ------------
     // -------------------------------------------------------------------------
 
     public static void mergeSortPorPrioridade(List<Cliente> lista) {
@@ -150,5 +149,10 @@ public class OrdenarAtendimentos {
                 .thenComparing(Cliente::getPrioridade)
         );
     }
-
+    public static long medirTempoApenas(Runnable operacaoOrdenacao) {
+        long inicio = System.currentTimeMillis();
+        operacaoOrdenacao.run();
+        long fim = System.currentTimeMillis();
+        return fim - inicio;
+    }
 }

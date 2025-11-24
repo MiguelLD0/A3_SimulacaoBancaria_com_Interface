@@ -248,4 +248,50 @@ public class ListarAtendimentosController {
             stageAtual.close();
         }
     }
+    @FXML
+    public void ordenarPorNome2() {
+        List<Cliente> lista = fila.getTodosClientes();
+        OrdenarAtendimentos.bubleSortPorNome(lista);
+        fila.ordenarFila(lista);
+        atualizarLista();
+        mensagem("Lista ordenada por Nome!");
+    }
+
+    @FXML
+    public void ordenarPorCPF2() {
+        List<Cliente> lista = fila.getTodosClientes();
+        OrdenarAtendimentos.selectionSortPorCPF(lista);
+        fila.ordenarFila(lista);
+        atualizarLista();
+        mensagem("Lista ordenada por CPF!");
+    }
+
+    @FXML
+    public void ordenarPorPrioridade2() {
+        List<Cliente> lista = fila.getTodosClientes();
+
+        // Agora o método recebe apenas a lista
+        OrdenarAtendimentos.mergeSortPorPrioridade(lista);
+
+        fila.ordenarFila(lista);
+        atualizarLista();
+        mensagem("Lista ordenada por Prioridade!");
+    }
+    @FXML
+    public void ordenardata()
+    {
+        List<Cliente> lista = fila.getTodosClientes();
+
+        OrdenarAtendimentos.ordenarCompleto(lista);
+        fila.ordenarFila(lista);
+        atualizarLista();
+        mensagem("Lista ordenada por Prioridade!");
+    }
+
+    private void mensagem(String texto) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(texto);
+        alert.showAndWait();
+    }
 }

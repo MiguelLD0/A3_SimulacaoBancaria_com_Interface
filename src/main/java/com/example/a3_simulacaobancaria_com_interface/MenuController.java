@@ -37,8 +37,28 @@ public class MenuController {
     private void onListar() {
         try {
             List<Cliente> lista = Menu.filaGlobal.getTodosClientes();
-            OrdenarAtendimentos.ordenarCompleto(lista);
+            int quantidadeClientes = lista.size();
+
+            // Mede o tempo da ordenação
+            long tempoOrdenacao = OrdenarAtendimentos.medirTempoApenas(() -> {
+                OrdenarAtendimentos.ordenarCompleto(lista);
+            });
+
             Menu.filaGlobal.ordenarFila(lista);
+
+            // Registra no relatório com mais detalhes
+            if (quantidadeClientes > 0) {
+                Relatorio.getInstance().registrarOrdenacao(tempoOrdenacao, quantidadeClientes);
+
+
+                double tempoMedio = (double) tempoOrdenacao / quantidadeClientes;
+                String detalhes = String.format("Tempo médio por cliente: %.2f ms", tempoMedio);
+                System.out.println("📊 " + detalhes);
+            }
+
+            System.out.printf("⏱️ Ordenação de %d clientes concluída em %d ms%n",
+                    quantidadeClientes, tempoOrdenacao);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ListarAtendimentos.fxml"));
             Parent root = loader.load();
 

@@ -63,6 +63,22 @@ public class ArquivoClientes {
                 clientes.add(new Cliente(nome, cpf, prioridade, data, hora));
             }
             OrdenarAtendimentos.ordenarCompleto(clientes);
+            // Mede o tempo da ordenação
+            long tempoOrdenacao = OrdenarAtendimentos.medirTempoApenas(() -> {
+                OrdenarAtendimentos.ordenarCompleto(clientes);
+            });
+            int quantidadeClientes = clientes.size();
+            if (quantidadeClientes > 0) {
+                Relatorio.getInstance().registrarOrdenacao(tempoOrdenacao, quantidadeClientes);
+
+
+                double tempoMedio = (double) tempoOrdenacao / quantidadeClientes;
+                String detalhes = String.format("Tempo médio por cliente: %.2f ms", tempoMedio);
+                System.out.println("📊 " + detalhes);
+            }
+
+            System.out.printf("⏱️ Ordenação de %d clientes concluída em %d ms%n",
+                    quantidadeClientes, tempoOrdenacao);
         } catch (Exception e){
             System.out.println("Erro ao carregar clientes: " + e.getMessage());
         }
