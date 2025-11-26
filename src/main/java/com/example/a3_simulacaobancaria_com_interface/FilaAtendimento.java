@@ -1,60 +1,68 @@
 package com.example.a3_simulacaobancaria_com_interface;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import java.util.List;
+
 public class FilaAtendimento {
+
     private Queue<Cliente> fila = new LinkedList<>();
-    public void adicionarCliente(Cliente c)
-    {
+
+    public void adicionarCliente(Cliente c) {
         fila.add(c);
-        // Registra a adição no relatório
         Relatorio.getInstance().registrarAdicaoCliente(c);
         System.out.println("Cliente adicionado: " + c.getNome());
     }
 
-    public Cliente chamarProximo()
-    {
+    public Cliente chamarProximo() {
         return fila.poll();
     }
-    public boolean filaVazia()
-    {
+
+    public boolean filaVazia() {
         return fila.isEmpty();
     }
+
+    // 🔵 LISTAR CLIENTES — agora exibe ID e Tipo
     public void listarClientes() {
         if (fila.isEmpty()) {
             System.out.println("Nenhum cliente aguardando atendimento.");
         } else {
             for (Cliente c : fila) {
-                System.out.println("Nome: " + c.getNome() + " | CPF: " + c.getCpf() + " | Prioridade: " + c.getPrioridade());
+                System.out.println(
+                        "ID: " + c.getId() +
+                                " | Nome: " + c.getNome() +
+                                " | Tipo: " + c.getTipo() +
+                                " | CPF: " + c.getCpf() +
+                                " | Prioridade: " + c.getPrioridade()
+                );
             }
         }
     }
-    public List<Cliente> getTodosClientes()
-    {
+
+    public List<Cliente> getTodosClientes() {
         return new ArrayList<>(fila);
     }
+
     public void ordenarFila(List<Cliente> listaOrdenada) {
         fila.clear();
-        for (Cliente c : listaOrdenada) {
-            fila.add(c);
-        }
+        fila.addAll(listaOrdenada);
     }
+
     public void removerAtendimentosVencidos() {
         LocalDateTime agora = LocalDateTime.now();
-        List<Cliente> clientesParaManter = new ArrayList<>();
-        List<Cliente> clientesRemovidos = new ArrayList<>();
+        List<Cliente> manter = new ArrayList<>();
+        List<Cliente> removidos = new ArrayList<>();
 
         for (Cliente cliente : fila) {
             LocalDate data = cliente.getData();
             String hora = cliente.getHora();
 
             if (data == null || hora == null) {
-                clientesParaManter.add(cliente);
+                manter.add(cliente);
                 continue;
             }
 
@@ -63,61 +71,47 @@ public class FilaAtendimento {
                 LocalDateTime dataHora = LocalDateTime.of(data, horario);
 
                 if (dataHora.isAfter(agora)) {
-                    clientesParaManter.add(cliente);
+                    manter.add(cliente);
                 } else {
-                    // Cliente vencido - será removido
-                    clientesRemovidos.add(cliente);
+                    removidos.add(cliente);
                 }
+
             } catch (Exception e) {
-                clientesParaManter.add(cliente);
+                manter.add(cliente);
             }
         }
 
-        // Remove os clientes vencidos e registra no relatório
-        for (Cliente clienteRemovido : clientesRemovidos) {
-            Relatorio.getInstance().registrarRemocao(clienteRemovido, "Tempo expirado");
-            Relatorio.getInstance().registrarTempoFila(clienteRemovido, clienteRemovido.getDataHoraAdicao());
+        for (Cliente r : removidos) {
+            Relatorio.getInstance().registrarRemocao(r, "Tempo expirado");
+            Relatorio.getInstance().registrarTempoFila(r, r.getDataHoraAdicao());
         }
 
         fila.clear();
-        fila.addAll(clientesParaManter);
+        fila.addAll(manter);
     }
 
     public boolean removerCliente(Cliente cliente) {
-        System.out.println("=== TENTANDO REMOVER CLIENTE DA FILA ===");
-        System.out.println("Cliente: " + cliente.getNome());
-        System.out.println("Fila antes: " + fila.size() + " clientes");
-
         boolean removido = fila.remove(cliente);
 
-        System.out.println("Remoção bem sucedida: " + removido);
-        System.out.println("Fila depois: " + fila.size() + " clientes");
-
         if (removido) {
-            // Registra a remoção manual no relatório
-            System.out.println("Chamando relatório para registrar remoção...");
             Relatorio.getInstance().registrarRemocao(cliente, "Removido manualmente");
-        } else {
-            System.out.println("FALHA: Cliente não encontrado na fila para remoção");
         }
 
         return removido;
     }
 
     public boolean removerCliente(int indice) {
-        List<Cliente> listaTemp = new ArrayList<>(fila);
-        if (indice >= 0 && indice < listaTemp.size()) {
-            Cliente clienteRemovido = listaTemp.remove(indice);
+        List<Cliente> temp = new ArrayList<>(fila);
+
+        if (indice >= 0 && indice < temp.size()) {
+            Cliente removido = temp.remove(indice);
             fila.clear();
-            fila.addAll(listaTemp);
+            fila.addAll(temp);
 
-            // Registra a remoção por índice no relatório
-            Relatorio.getInstance().registrarRemocao(clienteRemovido, "Removido manualmente por índice");
-
+            Relatorio.getInstance().registrarRemocao(removido, "Removido por índice");
             return true;
         }
         return false;
     }
 
 }
-

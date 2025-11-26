@@ -11,12 +11,15 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.a3_simulacaobancaria_com_interface.AgendarAtendimentoController"
       stylesheets="@style.css"
-      prefWidth="420" prefHeight="480">
+      prefWidth="420" prefHeight="520">
 
     <Label text="Agendar Atendimento"
            style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
     <VBox spacing="10" alignment="CENTER_LEFT">
+
+        <Label text="Tipo de Atendimento:" />
+        <ComboBox fx:id="comboTipo" prefWidth="200" />
 
         <Label text="Nome:" />
         <TextField fx:id="campoNome" promptText="Digite o nome completo" />
@@ -30,11 +33,9 @@
             <RadioButton text="Não" fx:id="rbNao" />
         </HBox>
 
-        <!-- NOVA SEÇÃO: Data do agendamento -->
         <Label text="Data do Agendamento:" />
         <DatePicker fx:id="campoData" />
 
-        <!-- NOVA SEÇÃO: Hora do agendamento -->
         <Label text="Horário:" />
         <TextField fx:id="campoHora" promptText="Ex: 14:30" />
 

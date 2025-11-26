@@ -4,15 +4,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Cliente {
+    private String id;
     private String nome;
+    private  String tipo;
     private String cpf;
     private int prioridade;
     private LocalDateTime agendamento;
     private LocalDate data;
     private String hora;
     private LocalDateTime dataHoraAdicao;
-    public Cliente(String nome, String cpf, int prioridade, LocalDate data, String hora){
+    public Cliente(String id, String nome, String tipo,String cpf, int prioridade, LocalDate data, String hora){
+        this.id = id;
         this.nome = nome;
+        this.tipo = tipo;
         this.cpf = cpf;
         this.prioridade = prioridade;
         this.data = data;
@@ -21,12 +25,17 @@ public class Cliente {
         this.dataHoraAdicao = LocalDateTime.now();
     }
 
-    public Cliente(String nome, String cpf, int prioridade, LocalDateTime agendamento){
+    public Cliente(String nome, String tipo, String cpf, int prioridade, LocalDateTime agendamento){
         this.nome = nome;
         this.cpf = cpf;
+        this.tipo = tipo;
         this.prioridade = prioridade;
         this.agendamento = agendamento;
+
     }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+    public String getTipo() { return id; }
     public LocalDateTime getDataHoraAdicao() {
         return dataHoraAdicao;
     }

@@ -91,7 +91,24 @@ public class ListarAtendimentosController {
                             cpfValue.getStyleClass().add("detalhe-value");
                             cpfItem.getChildren().addAll(cpfLabel, cpfValue);
 
-                            detalhesLine.getChildren().add(cpfItem);
+                            // TIPO
+                            VBox tipoItem = new VBox();
+                            tipoItem.getStyleClass().add("detalhe-item");
+                            Label tipoLabel = new Label("Tipo:");
+                            tipoLabel.getStyleClass().add("detalhe-label");
+                            Label tipoValue = new Label(cliente.getTipo());
+                            tipoValue.getStyleClass().add("detalhe-value");
+                            tipoItem.getChildren().addAll(tipoLabel, tipoValue);
+
+// ID
+                            VBox idItem = new VBox();
+                            idItem.getStyleClass().add("detalhe-item");
+                            Label idLabel = new Label("ID:");
+                            idLabel.getStyleClass().add("detalhe-label");
+                            Label idValue = new Label(String.valueOf(cliente.getId()));
+                            idValue.getStyleClass().add("detalhe-value");
+                            idItem.getChildren().addAll(idLabel, idValue);
+                            detalhesLine.getChildren().addAll(cpfItem, tipoItem, idItem);;
 
                             // Linha de data/hora
                             HBox dataHoraLine = new HBox();

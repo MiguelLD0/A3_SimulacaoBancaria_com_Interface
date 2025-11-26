@@ -17,6 +17,13 @@ public class LeitorPDF {
 
     private static final DateTimeFormatter FORMATADOR = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    private static String gerarId() {
+        return java.util.UUID.randomUUID().toString();
+    }
+
+    // =====================================================
+    //  LER CLIENTES DO PDF
+    // =====================================================
     public static List<Cliente> lerClientesDoPDF(String caminhoPDF) throws IOException {
 
         List<Cliente> lista = new ArrayList<>();
@@ -36,55 +43,52 @@ public class LeitorPDF {
         for (String linha : linhas) {
             linha = linha.trim();
 
-            // Nome
-            if (linha.toLowerCase().contains("nome")) {
+            if (linha.toLowerCase().contains("nome"))
                 nome = linha.replaceAll("(?i).*nome[: ]*", "").trim();
-            }
 
-            // CPF
-            if (linha.toLowerCase().contains("cpf")) {
+            if (linha.toLowerCase().contains("cpf"))
                 cpf = linha.replaceAll("(?i).*cpf[: ]*", "").trim();
-            }
 
-            // Prioridade
             if (linha.toLowerCase().contains("prioridade")) {
                 try {
-                    String prio = linha.replaceAll("(?i).*prioridade[: ]*", "").trim();
-                    prioridade = Integer.parseInt(prio);
+                    prioridade = Integer.parseInt(linha.replaceAll("(?i).*prioridade[: ]*", "").trim());
                 } catch (Exception ignored) {}
             }
 
-            // Data
             if (linha.toLowerCase().contains("data")) {
                 try {
-                    String dataStr = linha.replaceAll("(?i).*data[: ]*", "").trim();
-                    data = LocalDate.parse(dataStr, FORMATADOR);
+                    data = LocalDate.parse(linha.replaceAll("(?i).*data[: ]*", "").trim(), FORMATADOR);
                 } catch (Exception ignored) {}
             }
 
-            // Hora
-            if (linha.toLowerCase().contains("hora")) {
+            if (linha.toLowerCase().contains("hora"))
                 hora = linha.replaceAll("(?i).*hora[: ]*", "").trim();
-            }
 
-            // Se encontrou tudo → cria cliente
+            // Se temos um cliente completo → cria
             if (nome != null && cpf != null && prioridade != null && data != null && hora != null) {
 
-                lista.add(new Cliente(nome, cpf, prioridade, data, hora));
+                lista.add(new Cliente(
+                        gerarId(),
+                        nome,
+                        "Normal", // tipo padrão
+                        cpf,
+                        prioridade,
+                        data,
+                        hora
+                ));
 
-                // reset
-                nome = null;
-                cpf = null;
+                // Reset
+                nome = cpf = hora = null;
                 prioridade = null;
                 data = null;
-                hora = null;
             }
         }
-        return lista;
 
+        return lista;
     }
+
     // =====================================================
-    //  LER CLIENTES DO CSV
+    //  LER CLIENTES DO CSV (formato antigo)
     // =====================================================
     public static List<Cliente> lerClientesDoCSV(String caminhoCSV) throws IOException {
 
@@ -104,44 +108,48 @@ public class LeitorPDF {
             linha = linha.trim();
 
             if (linha.isEmpty()) {
-                // Se tiver um cliente completo, salva
                 if (nome != null && cpf != null && prioridade != null && data != null && hora != null) {
-                    lista.add(new Cliente(nome, cpf, prioridade, data, hora));
+                    lista.add(new Cliente(
+                            gerarId(),
+                            nome,
+                            "Normal",
+                            cpf,
+                            prioridade,
+                            data,
+                            hora
+                    ));
                 }
-                // reset
                 nome = cpf = hora = null;
                 prioridade = null;
                 data = null;
                 continue;
             }
 
-            if (linha.toLowerCase().startsWith("nome")) {
+            if (linha.toLowerCase().startsWith("nome"))
                 nome = linha.replaceAll("(?i).*nome[: ]*", "").trim();
-            }
-            else if (linha.toLowerCase().startsWith("cpf")) {
+
+            else if (linha.toLowerCase().startsWith("cpf"))
                 cpf = linha.replaceAll("(?i).*cpf[: ]*", "").trim();
-            }
-            else if (linha.toLowerCase().startsWith("prioridade")) {
+
+            else if (linha.toLowerCase().startsWith("prioridade"))
                 prioridade = Integer.parseInt(linha.replaceAll("(?i).*prioridade[: ]*", "").trim());
-            }
-            else if (linha.toLowerCase().startsWith("data")) {
+
+            else if (linha.toLowerCase().startsWith("data"))
                 data = LocalDate.parse(linha.replaceAll("(?i).*data[: ]*", "").trim(), FORMATADOR);
-            }
-            else if (linha.toLowerCase().startsWith("hora")) {
+
+            else if (linha.toLowerCase().startsWith("hora"))
                 hora = linha.replaceAll("(?i).*hora[: ]*", "").trim();
-            }
         }
 
-        // adiciona o último cliente se o arquivo não terminar com linha em branco
-        if (nome != null && cpf != null && prioridade != null && data != null && hora != null) {
-            lista.add(new Cliente(nome, cpf, prioridade, data, hora));
-        }
+        if (nome != null && cpf != null && prioridade != null && data != null && hora != null)
+            lista.add(new Cliente(gerarId(), nome, "Normal", cpf, prioridade, data, hora));
 
         br.close();
         return lista;
     }
+
     // =====================================================
-    //  NOVO MÉTODO: LER CSV FORMATO 2 (uma linha por cliente)
+    //  LER CSV FORMATO 2 (uma linha por cliente)
     // =====================================================
     public static List<Cliente> lerClientesDoCSVFormato2(String caminhoCSV) throws IOException {
         List<Cliente> lista = new ArrayList<>();
@@ -153,21 +161,16 @@ public class LeitorPDF {
             while ((linha = br.readLine()) != null) {
                 linha = linha.trim();
 
-                // Pula a primeira linha (cabeçalho)
                 if (primeiraLinha) {
                     primeiraLinha = false;
                     continue;
                 }
 
-                // Pula linhas vazias
-                if (linha.isEmpty()) {
+                if (linha.isEmpty())
                     continue;
-                }
 
-                // Divide a linha por vírgulas
                 String[] dados = linha.split(",");
 
-                // Verifica se tem pelo menos 5 campos: Nome, CPF, Prioridade, Data, Hora
                 if (dados.length >= 5) {
                     try {
                         String nome = dados[0].trim();
@@ -176,43 +179,139 @@ public class LeitorPDF {
                         LocalDate data = LocalDate.parse(dados[3].trim(), FORMATADOR);
                         String hora = dados[4].trim();
 
-                        lista.add(new Cliente(nome, cpf, prioridade, data, hora));
+                        lista.add(new Cliente(
+                                gerarId(),
+                                nome,
+                                "Normal",
+                                cpf,
+                                prioridade,
+                                data,
+                                hora
+                        ));
+
                     } catch (Exception e) {
                         System.err.println("Erro ao processar linha: " + linha);
-                        e.printStackTrace();
                     }
                 }
             }
         }
         return lista;
     }
+
     // =====================================================
-    //  MÉTODO QUE DETECTA AUTOMATICAMENTE O FORMATO DO CSV
-    // =====================================================
+//  DETECTAR FORMATO AUTOMATICAMENTE (AGORA COM 3 TIPOS)
+// =====================================================
     public static List<Cliente> lerClientesDoCSVAuto(String caminhoCSV) throws IOException {
-        // Primeiro, vamos verificar o formato do arquivo
+
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoCSV))) {
+
             String primeiraLinha = br.readLine();
 
-            if (primeiraLinha == null) {
-                return new ArrayList<>(); // Arquivo vazio
+            if (primeiraLinha == null)
+                return new ArrayList<>();
+
+            String lower = primeiraLinha.toLowerCase();
+
+            // -------------------------------------------
+            // FORMATO 1
+            // id,nome,tipo,tempo,hora
+            // -------------------------------------------
+            if (primeiraLinha.contains(",")
+                    && lower.contains("id")
+                    && lower.contains("nome")
+                    && lower.contains("tipo")
+                    && lower.contains("tempo")
+                    && lower.contains("hora")) {
+
+                return lerClientesDoCSVFormatoImagem(caminhoCSV);
             }
 
-            // Se a primeira linha contém vírgulas e parece ser um cabeçalho com os campos
-            if (primeiraLinha.contains(",") &&
-                    primeiraLinha.toLowerCase().contains("nome") &&
-                    primeiraLinha.toLowerCase().contains("cpf") &&
-                    primeiraLinha.toLowerCase().contains("prioridade")) {
+            // -------------------------------------------
+            // FORMATO 2 (uma linha por cliente)
+            // nome,cpf,prioridade,data,hora
+            // -------------------------------------------
+            if (primeiraLinha.contains(",")
+                    && lower.contains("nome")
+                    && lower.contains("cpf")
+                    && lower.contains("prioridade")) {
 
-                System.out.println("Detectado: Formato 2 (uma linha por cliente)");
                 return lerClientesDoCSVFormato2(caminhoCSV);
-            } else {
-                System.out.println("Detectado: Formato 1 (linha por campo)");
-                return lerClientesDoCSV(caminhoCSV);
             }
+
+            // -------------------------------------------
+            // FORMATO ANTIGO (várias linhas por cliente)
+            // -------------------------------------------
+            return lerClientesDoCSV(caminhoCSV);
         }
     }
+    public static List<Cliente> lerClientesDoCSVFormatoImagem(String caminhoCSV) throws IOException {
 
+        List<Cliente> lista = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoCSV))) {
+
+            String linha;
+            boolean primeira = true;
+
+            while ((linha = br.readLine()) != null) {
+
+                if (linha.trim().isEmpty()) continue;
+
+                // Pula a primeira linha (cabeçalho)
+                if (primeira) {
+                    primeira = false;
+                    continue;
+                }
+
+                String[] partes = linha.split(",");
+
+                if (partes.length < 5) {
+                    System.err.println("Linha inválida → " + linha);
+                    continue;
+                }
+
+                // Dados conforme a imagem
+                String id = partes[0].trim();
+                String nome = partes[1].trim();
+                String tipo = partes[2].trim().toLowerCase();
+                String tempoStr = partes[3].trim();
+                String hora = partes[4].trim();
+
+                int tempoAtendimento = 0;
+                try { tempoAtendimento = Integer.parseInt(tempoStr); }
+                catch (Exception ignored) {}
+
+                // Converter tipo → prioridade
+                // preferencial = 0
+                // corporativo = 1
+                // comum = 2
+                int prioridade;
+                switch (tipo) {
+                    case "preferencial":
+                        prioridade = 0;
+                        break;
+                    case "corporativo":
+                        prioridade = 1;
+                        break;
+                    default:
+                        prioridade = 2;
+                }
+
+                // Criar cliente — usando data atual (já que não existe no CSV)
+                Cliente cliente = new Cliente(
+                        id,
+                        nome,
+                        tipo,
+                        "000.000.000-00",
+                        prioridade,
+                        LocalDate.now().plusDays(1),
+                        hora
+                );
+
+                lista.add(cliente);
+            }
+        }
+
+        return lista;
+    }
 }
-
-

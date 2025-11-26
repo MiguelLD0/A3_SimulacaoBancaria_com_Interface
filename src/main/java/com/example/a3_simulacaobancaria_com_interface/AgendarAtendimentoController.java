@@ -11,17 +11,22 @@ public class AgendarAtendimentoController {
     @FXML private RadioButton rbSim;
     @FXML private RadioButton rbNao;
     @FXML private Button btnConfirmar;
-    @FXML private DatePicker campoData;      // ADICIONADO
-    @FXML private TextField campoHora;       // ADICIONADO
+    @FXML private DatePicker campoData;
+    @FXML private TextField campoHora;
+    @FXML private ComboBox<String> comboTipo;
 
-    private FilaAtendimento fila; // receberá a fila do Menu
+    private FilaAtendimento fila;
 
     public void initialize() {
+        // Configurar os RadioButtons
         ToggleGroup grupoDeficiencia = new ToggleGroup();
         rbSim.setToggleGroup(grupoDeficiencia);
         rbNao.setToggleGroup(grupoDeficiencia);
+        rbNao.setSelected(true);
 
-        rbNao.setSelected(true); // padrão = não
+        // Configurar o ComboBox de tipos
+        comboTipo.getItems().addAll("Comum", "Corporativo");
+        comboTipo.setValue("Comum");
     }
 
     public void setFila(FilaAtendimento fila) {
@@ -33,27 +38,39 @@ public class AgendarAtendimentoController {
         String nome = campoNome.getText().trim();
         String cpf = campoCPF.getText().trim();
         String hora = campoHora.getText().trim();
+        String tipoSelecionado = comboTipo.getValue();
 
-        // ----- Validações -----
         if (nome.isEmpty() || cpf.isEmpty() || campoData.getValue() == null || hora.isEmpty()) {
-            mostrarMensagem("Erro", "Preencha todos os campos (nome, CPF, data e horário)!");
+            mostrarMensagem("Erro", "Preencha todos os campos!");
             return;
         }
 
-        // prioridade: 0 = deficiente / 1 = normal
         int prioridade = rbSim.isSelected() ? 0 : 1;
 
-        // Criar o cliente (agora com data/hora também)
-        Cliente cliente = new Cliente(nome, cpf, prioridade, campoData.getValue(), hora);
+        // Gerar ID automático baseado no tipo
+        String id = GeradorID.gerarID(tipoSelecionado);
 
-        // Adiciona à fila global
+        // Criar o cliente - note que o tipo é "Comum" ou "Corporativo", não o ID
+        Cliente cliente = new Cliente(id, nome, tipoSelecionado, cpf, prioridade, campoData.getValue(), hora);
+
         fila.adicionarCliente(cliente);
 
-        mostrarMensagem("Sucesso", "Atendimento agendado com sucesso!");
+        mostrarMensagem("Sucesso", "Atendimento agendado com sucesso!\nTipo: " + tipoSelecionado + "\nID: " + id);
+
+        // Limpar campos após agendamento bem-sucedido
+        limparCampos();
 
         Stage stage = (Stage) btnConfirmar.getScene().getWindow();
-
         stage.close();
+    }
+
+    private void limparCampos() {
+        campoNome.clear();
+        campoCPF.clear();
+        campoHora.clear();
+        campoData.setValue(null);
+        comboTipo.setValue("Comum");
+        rbNao.setSelected(true);
     }
 
     private void mostrarMensagem(String titulo, String msg) {
